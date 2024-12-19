@@ -5,11 +5,14 @@ public class PlayerState : ScriptableObject, IState
     [SerializeField] private string stateName;
     [SerializeField,Range(0,1)] private float transitionDuration = 0.1f;
     private int stateHash;
+    private float stateStartTime;
 
     protected Animator animator;
     protected PlayerInput playerInput;
     protected PlayerController playerController;
     protected PlayerStateMachine playerStateMachine;
+    protected float StateDuration => Time.time - stateStartTime;
+    protected bool IsAnimationFinished => StateDuration >= animator.GetCurrentAnimatorStateInfo(0).length;
     private void OnEnable()
     {
         stateHash = Animator.StringToHash(stateName);
@@ -24,6 +27,7 @@ public class PlayerState : ScriptableObject, IState
     }
     public virtual void Enter()
     {
+        stateStartTime = Time.time; 
         animator.CrossFade(stateHash,transitionDuration);
     }
 

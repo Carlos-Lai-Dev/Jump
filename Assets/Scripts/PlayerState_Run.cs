@@ -19,6 +19,16 @@ public class PlayerState_Run : PlayerState
         {
             playerStateMachine.SwitchState(typeof(PlayerState_Idle));
         }
+
+        if (playerInput.isJump)
+        {
+            playerStateMachine.SwitchState(typeof(PlayerState_JumpUp));
+        }
+
+        if (!playerController.IsGround)
+        {
+            playerStateMachine.SwitchState(typeof(PlayerState_Fall));
+        }
     }
     public override void PhysicUpdate()
     {
